@@ -1,4 +1,6 @@
 import 'package:bootcamp_3_1/user/login_page.dart';
+import 'package:bootcamp_3_1/widget/camera.dart';
+import 'package:bootcamp_3_1/widget/map_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginPage(),
+      home: const Camera(),
     );
   }
 }
