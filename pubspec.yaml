@@ -46,7 +46,13 @@ dependencies:
 
   latlong2: ^0.10.1 # 지도를 현 위치로 이동
 
+
+  image_picker: ^1.2.3    # 이미지 패키지
+
+  flutter_localizations:         # 한글
+
   flutter_localizations: # 한글
+
     sdk: flutter
 
 dev_dependencies:
