@@ -2,7 +2,7 @@ name: bootcamp_3_1
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -38,17 +38,16 @@ dependencies:
   #Get X
   get: ^4.7.3
 
-  geocoding: ^5.0.0       # 위치정보 제공
+  geocoding: ^5.0.0 # 위치정보 제공
 
-  geolocator: ^14.0.3     # GPS 신호
+  geolocator: ^14.0.3 # GPS 신호
 
-  flutter_map: ^8.3.1     # 지도
+  flutter_map: ^8.3.1 # 지도
 
-  latlong2: ^0.10.1       # 지도를 현 위치로 이동
+  latlong2: ^0.10.1 # 지도를 현 위치로 이동
 
-  flutter_localizations:         # 한글
+  flutter_localizations: # 한글
     sdk: flutter
-  
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +65,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
