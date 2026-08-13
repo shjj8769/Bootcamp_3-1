@@ -1,10 +1,7 @@
-import 'package:bootcamp_3_1/model/planer.dart';
-import 'package:bootcamp_3_1/todo/todolist.dart';
-import 'package:bootcamp_3_1/user/login_page.dart';
 import 'package:bootcamp_3_1/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-List<Planer> todoList = [];
+
 void main() {
   runApp(const MyApp());
 }
@@ -19,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const LoginPage(),
+      home: const Home(),
     );
   }
 }
