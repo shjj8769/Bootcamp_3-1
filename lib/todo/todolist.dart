@@ -38,6 +38,7 @@ class _TodolistState extends State<Todolist> {
     return Scaffold(
       appBar: AppBar(
         title: Text(selectedDatePick),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: (){
@@ -110,6 +111,7 @@ class _TodolistState extends State<Todolist> {
                         duration: Duration(seconds: 2),
                       );
                       Message.todoList.remove(dayToDoList[index]);
+                      
                       setState(() {});
                     },
                     child: Card(

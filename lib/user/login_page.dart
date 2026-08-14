@@ -1,6 +1,9 @@
+import 'package:bootcamp_3_1/tabbar_md.dart';
+import 'package:bootcamp_3_1/todo/todolist.dart';
 import 'package:bootcamp_3_1/user/register.dart';
 import 'package:bootcamp_3_1/util/user.dart';
 import 'package:bootcamp_3_1/view/home.dart';
+import 'package:bootcamp_3_1/util/message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -137,8 +140,9 @@ class _LoginPageState extends State<LoginPage> {
                   for (int i = 0; i < User.info.userId.length; i++) {
                     if (User.info.userId[i] == idController.text.trim() &&
                         User.info.userPw[i] == pwController.text.trim()) {
-                      userinfo = true;
-                      break;
+                          User.userNum = i;
+                          userinfo = true;
+                          break;
                     }
                   }
                   if(userinfo){
@@ -202,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
         actions: [
           TextButton(
             onPressed: () {
-              Get.to(Home());
+              Get.to(TabbarMd());
             },
             child: Text('확인'),
           ),
