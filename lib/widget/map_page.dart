@@ -3,16 +3,13 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
-
   @override
   State<MapPage> createState() => _MapPageState();
 }
 
 class _MapPageState extends State<MapPage> {
-
   // Property
   late Position currentPosition;    // GPS 신호 가져오는
   late double latData;              // 위도 정보
@@ -28,14 +25,60 @@ class _MapPageState extends State<MapPage> {
     getCurrentLocation();
   }
 
-    void getCurrentLocation()async{
-    Position position = await Geolocator.getCurrentPosition();
-    currentPosition = position;
-    canRun = true;
-    latData = currentPosition.latitude;
-    longData = currentPosition.longitude;
-    print("-------> lat : $latData, long : $longData");
-    setState(() {});
+  void getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // 1. 위치 서비스(GPS)가 켜져 있는지 확인
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('위치 서비스가 꺼져 있습니다. 설정에서 켜주세요.')),
+        );
+      }
+      return;
+    }
+
+    // 2. 권한 상태 확인
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('위치 권한이 거부되었습니다.')),
+          );
+        }
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('위치 권한이 영구적으로 거부되었습니다. 설정에서 권한을 허용해주세요.')),
+        );
+      }
+      return;
+    }
+
+    // 3. 모든 조건 통과 시 위치 가져오기
+    try {
+      Position position = await Geolocator.getCurrentPosition();
+      currentPosition = position;
+      canRun = true;
+      latData = currentPosition.latitude;
+      longData = currentPosition.longitude;
+      print("-------> lat : $latData, long : $longData");
+      setState(() {});
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('위치 정보를 가져오지 못했습니다: $e')),
+        );
+      }
+    }
   }
 
   @override
@@ -91,11 +134,4 @@ class _MapPageState extends State<MapPage> {
       ]
     );
   }
-} // class 
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
+} // class
