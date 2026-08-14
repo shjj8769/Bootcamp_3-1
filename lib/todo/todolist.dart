@@ -13,10 +13,10 @@ class Todolist extends StatefulWidget {
 
 class _TodolistState extends State<Todolist> {
   // Property
-  late bool doneValue;
-  late DateTime date;
-  late String selectedDatePick;
-  late List<bool> completeToDoList;
+  late bool doneValue; // 완료 여부 확인
+  late DateTime date;  // 날짜
+  late String selectedDatePick; // 선택된 날짜(캘린더 아이콘 클릭 후 설정)
+  late List<bool> completeToDoList; // 완료 된 todo목록 리스트 설정
 
   @override
   void initState() {
@@ -30,6 +30,7 @@ class _TodolistState extends State<Todolist> {
   @override
   Widget build(BuildContext context) {
     List<ToDo> dayToDoList = [];
+    // 완료한 갯수를 확인하기 위해서 생성
     for(int i = 0; i < Message.todoList.length; i++){
       if(Message.todoList[i].todoDate == selectedDatePick){
         dayToDoList.add(Message.todoList[i]);
@@ -52,7 +53,7 @@ class _TodolistState extends State<Todolist> {
           )
         ],
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Row(
@@ -70,27 +71,36 @@ class _TodolistState extends State<Todolist> {
               ],
             ),
             SizedBox(
-              height: 650,
+              height: 590,
               child: ListView.builder(
                 itemCount: dayToDoList.length,
                 itemBuilder: (context, index) {
                   return Dismissible(
                     direction: DismissDirection.endToStart,
                     key: ValueKey(dayToDoList[index]),
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.white,
+                    background: SizedBox(
+                      width: 400,
+                      height: 300,
+                      child: Card(
+                        color: Colors.red,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     onDismissed: (direction) {
+                      // 목록 삭제를 snackBar로 알림
                       Get.snackbar(
-                        '',
+                        '', // ''를 2번 설정 하지 않을 시 error -> 공백여부 설정
                         '',
                         titleText: Text(
                           '삭제 완료',
@@ -110,6 +120,7 @@ class _TodolistState extends State<Todolist> {
                         snackPosition: SnackPosition.BOTTOM,
                         duration: Duration(seconds: 2),
                       );
+                      // 사용자가 삭제한 번호의 목록을 삭제
                       Message.todoList.remove(dayToDoList[index]);
                       
                       setState(() {});
@@ -149,7 +160,8 @@ class _TodolistState extends State<Todolist> {
                                   Text(
                                     dayToDoList[index].todoTitle,
                                     style: TextStyle(
-                                      fontStyle: dayToDoList[index].todoValue ? FontStyle.italic : FontStyle.normal
+                                      // 완료 시 할 일 목록에 취소선
+                                      decoration: dayToDoList[index].todoValue ? TextDecoration.lineThrough : TextDecoration.none
                                     ),
                                   ),
                                 ]
@@ -164,7 +176,7 @@ class _TodolistState extends State<Todolist> {
                                     dayToDoList[index].todoText,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      color: dayToDoList[index].todoValue ? Colors.grey : Color(0xFF8EA2E9)
+                                      color: dayToDoList[index].todoValue ? Colors.grey : Color(0xFF8EA2E9) // 아이콘을 배경색과 동일하게 만들어 사용자가 인식하지 못하지만, 실제로 아이콘은 존재
                                     ),
                                   )
                                 ],
@@ -185,7 +197,7 @@ class _TodolistState extends State<Todolist> {
                   padding: const EdgeInsets.all(15.0),
                   child: IconButton(
                     onPressed: ()async{
-                      await Get.to(Todoadd());
+                      await Get.to(Todoadd()); // 추가한 목록을 바로 받아오기 위해서 비동기 처리 실행
                       setState(() {});
                     }, 
                     style: IconButton.styleFrom(
@@ -209,9 +221,9 @@ class _TodolistState extends State<Todolist> {
   }
 
   //-------Functions 
-    void datePick() async{
-    int firstYear = date.year;
-    int lastYear = firstYear + 1;
+    void datePick() async{ // 날짜를 받아오는 함수
+    int firstYear = date.year; // 시작 년도 설정
+    int lastYear = firstYear + 1; // 사용자가 선택 가능한 최대 년도 설정
 
     final selectedDate = await showDatePicker(
       context: context, 
@@ -219,7 +231,7 @@ class _TodolistState extends State<Todolist> {
       lastDate: DateTime(lastYear),
     );
     if(selectedDate !=  null){
-      selectedDatePick = '${selectedDate.toString().substring(0,10)}';
+      selectedDatePick = '${selectedDate.toString().substring(0,10)}'; // 불필요한 문자 삭제를 위해 substring()사용
     }
     setState(() {});
   }
