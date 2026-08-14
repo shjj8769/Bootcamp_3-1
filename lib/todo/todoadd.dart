@@ -14,13 +14,13 @@ class Todoadd extends StatefulWidget {
 
 class _TodoaddState extends State<Todoadd> {
   // Property
-  late TextEditingController titleController;
-  late DateTime date;
-  late bool checkboxValue;
-  late String selectedValue;
-  late String selectedTime;
-  late String selectedDatePick;
-  late String selectedMunute;
+  late TextEditingController titleController; // 할 일 이름
+  late DateTime date;                         // 날짜
+  late bool checkboxValue;                    // 중요 선택
+  late String selectedValue;                  // 일상/업무/건강 선택
+  late String selectedTime;                   // 사용자가 선택한 시간
+  late String selectedDatePick;               // 사용자가 선택한 날짜
+  late String selectedMunute;                 // 사용자가 선택한 분
 
   final List<String> categories = ['일상', '업무', '건강'];
 
@@ -31,7 +31,7 @@ class _TodoaddState extends State<Todoadd> {
     selectedDatePick = DateTime.now().
     toString().substring(0, 10);
     checkboxValue = false;
-    selectedValue = '일상';
+    selectedValue = '일상'; // 일상/업무/건강 중 초기 값 설정
     date = DateTime.now();
     selectedTime = '';
     selectedMunute = '';
@@ -87,6 +87,7 @@ class _TodoaddState extends State<Todoadd> {
             ),
             SizedBox(
               height: 200,
+              // 시간 선택 기능 구현
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.time,
                 minuteInterval: 1,
@@ -104,6 +105,7 @@ class _TodoaddState extends State<Todoadd> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // 일상/업무/건강 선택 가능한 dropdownbutton구현
                   DropdownButton<String>(
                     value: selectedValue,
                     items: ['일상', '업무', '건강'].map((String value) {
@@ -125,6 +127,7 @@ class _TodoaddState extends State<Todoadd> {
                       fontSize: 15,
                     ),
                     ),
+                    // 중요도 선택 가능한 체크 박스 생성
                   Checkbox(
                     value: checkboxValue, 
                     onChanged: (value){
@@ -137,8 +140,36 @@ class _TodoaddState extends State<Todoadd> {
             ),
             ElevatedButton(
               onPressed: (){
-                addToDoList();
-                Get.back();
+                // 할 일 제목 미기입 시 스낵바 출력
+                if(titleController.text.trim().isEmpty){
+                  Get.snackbar(
+                    '',
+                    '',
+                    titleText: Text(
+                      '경고',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ), 
+                    messageText: Text(
+                      '할 일을 입력하세요.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    backgroundColor: Colors.red,
+                    snackPosition: SnackPosition.BOTTOM,
+                    duration: Duration(seconds: 2),
+                  );
+                }
+                else{
+                  // 정상 기입 시 todolist에 할 일 목록추가
+                  addToDoList();
+                  Get.back();
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xFF4A5DBB),
@@ -175,10 +206,10 @@ class _TodoaddState extends State<Todoadd> {
       todoTitle: titleController.text.trim(), 
       todoIcon: Icon(
                   Icons.star,
-                  color: checkboxValue ? Color(0xFF8EA2E9) : Color(0xFFF4F7FF),
+                  color: checkboxValue ? Color(0xFF8EA2E9) : Color(0xFFF4F7FF), // 중요 선택 안할 시 별이 안보이도록 설정
                 ),
-      todoValue: false,
-      todoTime: '$selectedTime : $selectedMunute',
+      todoValue: false, // todoValue : 완료 or 미완료 기입이기 때문에 초기값을 false로 설정 -> 이후 todolist.dart에서 설정 가능
+      todoTime: '$selectedTime : $selectedMunute', // 시간과 분을 따로 저장해서 출력
       )
     );
     setState(() {});
