@@ -106,11 +106,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
     achievementValue = Message.completePercent;
     achievementCount = (dayToDoList.length - completeCount);
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    percentage();
     return Scaffold(
       body: Column(
         children: [
@@ -201,7 +201,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           break;
 
                         case 1:
-                          Get.to(Todoadd());
+                          Get.to(Todoadd())!.then((value){
+                            percentage();
+                            setState(() {});
+                          });
                           break;
 
                         case 2:

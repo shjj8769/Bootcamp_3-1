@@ -20,6 +20,7 @@ class _TabbarMdState extends State<TabbarMd> with SingleTickerProviderStateMixin
     super.initState();
     tabController = TabController(length: 4, vsync: this);
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +36,12 @@ class _TabbarMdState extends State<TabbarMd> with SingleTickerProviderStateMixin
       bottomNavigationBar: Container(
         color: Colors.white,
         child: TabBar(
+          onTap: (index) {
+            if(index == 0){
+              setState(() {});
+              print('화면 새로고침 완료');
+            }
+          },
           controller: tabController,
           labelColor: const Color(0xFF4A5DBB),
           unselectedLabelColor: Colors.grey,
